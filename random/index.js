@@ -27,6 +27,11 @@ client.on('message', async msg => {
     if (msg.content === 'おはよう') {
         msg.channel.send('おなかすいた')
     }
+    if　(msg.content.match(/にゃーん/)){
+        msg.channel.send('にゃにゃにゃにゃ〜ん')
+    }
+
+
 })
 
 client.login('NzY2ODM1NjMwNTIwNzk1MjA2.X4pJVQ.ZiT2Q11JKNEBuo0M9l7V_SrvOJ0')
