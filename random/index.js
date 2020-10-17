@@ -86,10 +86,12 @@ client.on('message', async msg => {
         }
         })
     }
+
     if (msg.content === 'おはよう') {
         msg.channel.send('おなかすいた')
     }
-    if　(msg.content.match('/にゃーん/')){
+
+    if　(msg.content === ('/にゃーん/')){
         msg.channel.send('にゃにゃにゃにゃ〜ん')
     }
 
