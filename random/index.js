@@ -32,7 +32,7 @@ client.on('message', async msg => {
     }
 
     // ex) !random 5
-    if (msg.content.startsWith('!random')) {
+    if (msg.content.startsWith('話題')) {
         let num = msg.content.split(" ")[1]
         if(num == null) {
            num = 3 
@@ -41,7 +41,7 @@ client.on('message', async msg => {
         console.log(num)
         msg.channel.send('random topic: '+num+" 件")
         var syugo = ["かないさん、","あやださん、","てしんさん、", "ヤマカツさん、", "岡さん、", "岸田さん、"]
-        var topic = ["今日のおやつはなんですか？","ねむいです","おなかすきました", '昨日晩ご飯何食べた？', '今正直好きな子おる？', 'コロナっていつ終わるん？', 'ガッキー派？浜辺美波派？', '自慢話してみよか', '今の雰囲気にぴったりの音楽流して', '座右の名教えて', '好きな異性のタイプを詳しく教えて', '子供は何人欲しい？', '悪ガキみたいな顔してますけど今までで一番悪いことした時の話してください', 'コーラ買ってきて', 'スクワットしてみよか', "なんか暴露して", "肘みして", "前世絶対トトロやん"];
+        var topic = ["今日のおやつはなんですか？","ねむいです","おなかすきました", '昨日晩ご飯何食べた？', '今正直好きな子おる？', 'コロナっていつ終わるん？', 'ガッキー派？浜辺美波派？', '自慢話してみよか', '今の雰囲気にぴったりの音楽流して', '座右の名教えて', '好きな異性のタイプを詳しく教えて', '子供は何人欲しい？', '悪ガキみたいな顔してますけど今までで一番悪いことした時の話してください', 'コーラ買ってきて', 'スクワットしてみよか', "なんか暴露して", "肘みして", "前世絶対トトロやん", "マック派？マクド派？"];
 
         for(let i = 0; i < num; i++){
             msg.channel.send(syugo[Math.floor(Math.random()*syugo.length)]+topic[Math.floor(Math.random()*topic.length)])
@@ -49,7 +49,7 @@ client.on('message', async msg => {
     }
 
     // twitter のトレンドを取得
-    if (msg.content.startsWith('!twtrend')) {
+    if (msg.content.startsWith('トレンド')) {
         msg.channel.send("**twitter trend**")
         twclient.get('trends/place', params).then(function(res){
             //トレンドをJson形式で取得
@@ -67,34 +67,29 @@ client.on('message', async msg => {
     }
 
     // yahoo ニュースをスクレイピング 
-    if (msg.content.startsWith('!yahoo')) {
-        const categories = ['sports', 'business', 'entertainment', 'it', 'science', 'world', 'domestic', 'life', 'local'];
-        categories.forEach(content => {
-            request('https://news.yahoo.co.jp/categories/'+content, (e, response, body) => {
-            if (e) {
-                console.error(e)
-            }
+    if (msg.content.startsWith('ニュース')) {
+        request('https://news.yahoo.co.jp/', (e, response, body) => {
+        if (e) {
+            console.error(e)
+        }
 
-            try {
-                const $ = cheerio.load(body)
-                const topics = $('.topicsListItem').children("a")
-                console.log(content)
-                msg.channel.send(content)
-                topics.each(function(){
-                    console.log($(this).text());
-                    // msg.channel.send($(this).text())
-                    msg.channel.send($(this).attr().href)
-                });
-            } catch (e) {
-                console.error(e)
-            }
-            })
+        try {
+            const $ = cheerio.load(body)
+            const topics = $('.topicsListItem').children("a")
+            topics.each(function(){
+                console.log($(this).text());
+                // msg.channel.send($(this).text())
+                msg.channel.send($(this).attr().href)
+            });
+        } catch (e) {
+            console.error(e)
+        }
         })
     }
     if (msg.content === 'おはよう') {
         msg.channel.send('おなかすいた')
     }
-    if　(msg.content.match(/にゃーん/)){
+    if　(msg.content.match('/にゃーん/')){
         msg.channel.send('にゃにゃにゃにゃ〜ん')
     }
 
