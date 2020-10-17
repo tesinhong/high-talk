@@ -17,6 +17,10 @@ client.on('message', async msg => {
     if (msg.content === '!topic') {
         msg.channel.send('random topic')
     }
+
+    if (msg.content === 'おはよう') {
+        msg.channel.send('おなかすいた')
+    }
 })
 
 client.login('NzY2ODM1NjMwNTIwNzk1MjA2.X4pJVQ.ZiT2Q11JKNEBuo0M9l7V_SrvOJ0')
