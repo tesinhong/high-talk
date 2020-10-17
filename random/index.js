@@ -100,6 +100,7 @@ client.on('message', async msg => {
         msg.channel.send('にゃにゃにゃにゃ〜ん')
     }
 
+
 })
 
 client.login('NzY2ODM1NjMwNTIwNzk1MjA2.X4pJVQ.ZiT2Q11JKNEBuo0M9l7V_SrvOJ0')
