@@ -137,6 +137,9 @@ export class DemoMeetingApp implements AudioVideoObserver, DeviceChangeObserver,
   tileIdToTileIndex: { [id: number]: number } = {};
   tileArea = document.getElementById('tile-area') as HTMLDivElement;
 
+  //参加者リスト
+  participants: string[] = new Array(0);
+
   cameraDeviceIds: string[] = [];
   microphoneDeviceIds: string[] = [];
 
@@ -854,6 +857,7 @@ export class DemoMeetingApp implements AudioVideoObserver, DeviceChangeObserver,
       );
       this.log(this.roster[attendeeId].name);
       this.sendSystemMessage(this.roster[attendeeId].name + "さんが参加しました。");
+      this.participants.push(this.roster[attendeeId].name);
     };
     this.audioVideo.realtimeSubscribeToAttendeeIdPresence(handler);
     const activeSpeakerHandler = (attendeeIds: string[]): void => {
@@ -924,20 +928,21 @@ export class DemoMeetingApp implements AudioVideoObserver, DeviceChangeObserver,
   }
 
   dataMessageHandler(dataMessage: DataMessage): void {
+    let msg = dataMessage.text();
     if (!dataMessage.throttled) {
       const isSelf = dataMessage.senderAttendeeId === this.meetingSession.configuration.credentials.attendeeId;
       if (dataMessage.timestampMs <= this.lastReceivedMessageTimestamp) {
         return;
       }
       this.lastReceivedMessageTimestamp = dataMessage.timestampMs;
-      console.log(dataMessage.text());
+      console.log(msg);
       const messageDiv = document.getElementById('receive-message') as HTMLDivElement;
       const messageNameSpan = document.createElement('div') as HTMLDivElement;
       messageNameSpan.classList.add('message-bubble-sender');
       messageNameSpan.innerText = (dataMessage.senderExternalUserId.split('#').slice(-1)[0]);
       const messageTextSpan = document.createElement('div') as HTMLDivElement;
       messageTextSpan.classList.add(isSelf ? 'message-bubble-self' : 'message-bubble-other');
-      messageTextSpan.innerHTML = this.markdown.render(dataMessage.text()).replace(/[<]a /g, '<a target="_blank" ');
+      messageTextSpan.innerHTML = this.markdown.render(msg).replace(/[<]a /g, '<a target="_blank" ');
       const appendClass = (element: HTMLElement, className: string) => {
         for (let i = 0; i < element.children.length; i++) {
           const child = element.children[i] as HTMLElement;
@@ -952,18 +957,37 @@ export class DemoMeetingApp implements AudioVideoObserver, DeviceChangeObserver,
       this.lastMessageSender = dataMessage.senderAttendeeId;
       messageDiv.appendChild(messageTextSpan);
       messageDiv.scrollTop = messageDiv.scrollHeight;
+
+      // ex) !random 5
+      if (msg.startsWith('話題')) {
+        let num = parseInt(msg.split(" ")[1]);
+        if(isNaN(num)) {
+          num = 3 
+        }
+
+        console.log(num)
+        this.sendSystemMessage('random topic: '+num+" 件")
+        // var syugo = ["かないさん、","あやださん、","てしんさん、", "ヤマカツさん、", "岡さん、", "岸田さん、"]
+        var topic = ["今日のおやつはなんですか？","ねむいです","おなかすきました", '昨日晩ご飯何食べた？', '今正直好きな子おる？', 'コロナっていつ終わるん？', 'ガッキー派？浜辺美波派？', '自慢話してみよか', '今の雰囲気にぴったりの音楽流して', '座右の名教えて', '好きな異性のタイプを詳しく教えて', '子供は何人欲しい？', '悪ガキみたいな顔してますけど今までで一番悪いことした時の話してください', 'コーラ買ってきて', 'スクワットしてみよか', "なんか暴露して", "肘みして", "前世絶対トトロやん", "マック派？マクド派？"];
+
+        for(let i = 0; i < num; i++){
+          this.sendSystemMessage(this.participants[Math.floor(Math.random()*(this.participants.length))]+"さん、"+topic[Math.floor(Math.random()*(topic.length))]);
+        }
+      }
+
     } else {
       this.log('Message is throttled. Please resend');
     }
   }
 
   sendSystemMessage(message: string): void{
+    const isSelf = "System" === this.meetingSession.configuration.credentials.attendeeId;
     const messageDiv = document.getElementById('receive-message') as HTMLDivElement;
     const messageNameSpan = document.createElement('div') as HTMLDivElement;
     messageNameSpan.classList.add('message-bubble-sender');
     messageNameSpan.innerText = ("System");
     const messageTextSpan = document.createElement('div') as HTMLDivElement;
-    messageTextSpan.classList.add('message-bubble-other');
+    messageTextSpan.classList.add(isSelf ? 'message-bubble-self' : 'message-bubble-other');
     messageTextSpan.innerHTML = this.markdown.render(message).replace(/[<]a /g, '<a target="_blank" ');
     const appendClass = (element: HTMLElement, className: string) => {
       for (let i = 0; i < element.children.length; i++) {
