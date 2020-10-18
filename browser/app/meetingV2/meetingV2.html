@@ -4,16 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
-  <title>Meeting Demo</title>
+  <title>High Talk</title>
 </head>
-<body>
+<body class="bg-warning">
 
 <!-- Initial meeting authentication screen with meeting and name inputs -->
 
 <div id="flow-authenticate" class="flow text-center p-2">
-  <div class="text-muted" style="position:fixed;right:3px;bottom:3px" id="sdk-version"></div>
+  <div class="text-black" style="position:fixed;right:3px;bottom:3px" id="sdk-version"></div>
   <div class="container">
     <form id="form-authenticate">
+      <h1 class="h1 mb-3 font-weight-bold">High Talk</h1>
       <h1 class="h3 mb-3 font-weight-normal">Join a meeting</h1>
       <div class="row mt-3">
         <label for="inputMeeting" class="sr-only">Meeting Title</label>
@@ -106,7 +107,7 @@
         <div class="card-body">
           <h4 class="card-title">Unable to find meeting</h4>
           <p class="card-text">There was an issue finding that meeting. The meeting may have already ended, or your authorization may have expired.</p>
-          <small id="failed-meeting-error" class="text-muted"></small>
+          <small id="failed-meeting-error" class="text-black"></small>
         </div>
       </div>
       <button class="btn btn-lg btn-outline-warning btn-block" type="submit">OK</button>
@@ -215,12 +216,12 @@
   <div class="p-2 d-none d-sm-block align-items-end" style="position:fixed;right:0;bottom:0;left:0;">
     <div class="row align-items-end">
       <div class="col">
-        <div id="chime-meeting-id" class="text-muted"></div>
-        <div id="desktop-attendee-id" class="text-muted"></div>
+        <div id="chime-meeting-id" class="text-black"></div>
+        <div id="desktop-attendee-id" class="text-black"></div>
       </div>
       <div class="col d-none d-lg-block">
-        <div id="video-uplink-bandwidth" class="text-muted text-right"></div>
-        <div id="video-downlink-bandwidth" class="text-muted text-right"></div>
+        <div id="video-uplink-bandwidth" class="text-black text-right"></div>
+        <div id="video-downlink-bandwidth" class="text-black text-right"></div>
       </div>
     </div>
   </div>
@@ -228,9 +229,9 @@
   <div id="meeting-container" class="container-fluid h-100" style="display:flex; flex-flow:column">
     <div class="row mb-3 mb-lg-0" style="flex: unset;">
       <div class="col-12 col-lg-3 order-1 order-lg-1 text-center text-lg-left">
-        <div id="meeting-id" class="navbar-brand text-muted m-0 m-lg-2"></div>
-        <div id="mobile-chime-meeting-id" class="text-muted d-block d-sm-none" style="font-size:0.65rem;"></div>
-        <div id="mobile-attendee-id" class="text-muted d-block d-sm-none mb-2" style="font-size:0.65rem;"></div>
+        <div id="meeting-id" class="navbar-brand text-black m-0 m-lg-2"></div>
+        <div id="mobile-chime-meeting-id" class="text-black d-block d-sm-none" style="font-size:0.65rem;"></div>
+        <div id="mobile-attendee-id" class="text-black d-block d-sm-none mb-2" style="font-size:0.65rem;"></div>
       </div>
       <div class="col-8 col-lg-6 order-2 order-lg-2 text-left text-lg-center">
         <div class="btn-group mx-1 mx-xl-2 my-2" role="group" aria-label="Toggle microphone">
@@ -415,7 +416,7 @@
         <div class="card-body">
           <h4 class="card-title">Unable to join meeting</h4>
           <p class="card-text">There was an issue joining that meeting. Check your connectivity and try again.</p>
-          <small id="failed-join-error" class="text-muted"></small>
+          <small id="failed-join-error" class="text-black"></small>
         </div>
       </div>
       <button class="btn btn-lg btn-outline-warning btn-block" type="submit">OK</button>
