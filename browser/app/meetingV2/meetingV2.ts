@@ -35,6 +35,11 @@ import {
   ClientVideoStreamReceivingReport,
 } from '../../../../src/index';
 
+//import * as Twitter from "twitter"
+//import { FullUser } from "twitter-d" 
+import * as request  from 'request'
+import * as cheerio from 'cheerio'
+
 class DemoTileOrganizer {
   // this is index instead of length
   static MAX_TILES = 17;
@@ -967,12 +972,61 @@ export class DemoMeetingApp implements AudioVideoObserver, DeviceChangeObserver,
 
         console.log(num)
         this.sendSystemMessage('random topic: '+num+" 件")
-        // var syugo = ["かないさん、","あやださん、","てしんさん、", "ヤマカツさん、", "岡さん、", "岸田さん、"]
         var topic = ["今日のおやつはなんですか？","ねむいです","おなかすきました", '昨日晩ご飯何食べた？', '今正直好きな子おる？', 'コロナっていつ終わるん？', 'ガッキー派？浜辺美波派？', '自慢話してみよか', '今の雰囲気にぴったりの音楽流して', '座右の名教えて', '好きな異性のタイプを詳しく教えて', '子供は何人欲しい？', '悪ガキみたいな顔してますけど今までで一番悪いことした時の話してください', 'コーラ買ってきて', 'スクワットしてみよか', "なんか暴露して", "肘みして", "前世絶対トトロやん", "マック派？マクド派？"];
 
         for(let i = 0; i < num; i++){
           this.sendSystemMessage(this.participants[Math.floor(Math.random()*(this.participants.length))]+"さん、"+topic[Math.floor(Math.random()*(topic.length))]);
         }
+      }
+/*
+      // Twitter Trend
+      const twclient = new Twitter({
+        consumer_key: "o67nD9VZa8BwblGjUiDmJlX3F",
+        consumer_secret: "xWcwsLj2Cx2u6olOUjUV8r0j9kLkZfDBUViVI87uV0GTza1oE8",
+        access_token_key: "1205911520820916224-dv6Dq0r7zB89opKJlso3FjTkwM7jGE",
+        access_token_secret: "7B9oPOdfcJPS0cP806Q48ltcdJuZ46NiY683YxK4yWRVe"
+      });
+     
+      const params = {
+        id: 23424856
+      };
+
+      if (msg.startsWith('トレンド')) {
+        this.sendSystemMessage("**twitter trend**")
+        twclient.get('trends/place', params).then(function(res){
+            //トレンドをJson形式で取得
+            var json = JSON.stringify(res,undefined,2);
+            JSON.parse(json, function(key, value){
+                if(key=="name"){
+                    //トレンド名の取得
+                    console.log(value)
+                }
+            });
+        }).catch(function(err){
+            console.log(err);
+        });
+      }
+*/
+    
+    // yahoo ニュースをスクレイピング 
+      if (msg.startsWith('ニュース')) {
+        request('https://news.yahoo.co.jp/', (e, response, body) => {
+        if (e) {
+            console.error(e)
+        }
+
+        try {
+            const $ = cheerio.load(body)
+            const topics = $('.topicsListItem').children("a")
+            for (let i = 0; i < topics.length; i++){
+                console.log($(topics[i]).text());
+                // msg.channel.send($(this).text())
+                this.sendSystemMessage($(topics[i]).attr().href)
+            };
+        } catch (e) {
+            console.error(e)
+        }
+        })
       }
 
     } else {

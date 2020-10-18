@@ -24,6 +24,9 @@ module.exports = env => {
       })
     ],
     entry: [`./app/${app}/${app}.ts`],
+    node: {
+      fs: 'empty'
+    },
     resolve: {
       extensions: ['.webpack.js', '.web.js', '.ts', '.tsx', '.js'],
     },
@@ -73,5 +76,8 @@ module.exports = env => {
     performance: {
       hints: false,
     },
+
+
+
   };
 };
