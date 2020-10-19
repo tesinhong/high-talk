@@ -35,8 +35,7 @@ import {
   ClientVideoStreamReceivingReport,
 } from '../../../../src/index';
 
-//import * as Twitter from "twitter"
-//import { FullUser } from "twitter-d" 
+import * as Twitter from "twitter"
 import * as request  from 'request'
 import * as cheerio from 'cheerio'
 
@@ -978,7 +977,7 @@ export class DemoMeetingApp implements AudioVideoObserver, DeviceChangeObserver,
           this.sendSystemMessage(this.participants[Math.floor(Math.random()*(this.participants.length))]+"さん、"+topic[Math.floor(Math.random()*(topic.length))]);
         }
       }
-/*
+
       // Twitter Trend
       const twclient = new Twitter({
         consumer_key: "o67nD9VZa8BwblGjUiDmJlX3F",
@@ -992,7 +991,8 @@ export class DemoMeetingApp implements AudioVideoObserver, DeviceChangeObserver,
       };
 
       if (msg.startsWith('トレンド')) {
-        this.sendSystemMessage("**twitter trend**")
+        const x = this
+        x.sendSystemMessage("**twitter trend**")
         twclient.get('trends/place', params).then(function(res){
             //トレンドをJson形式で取得
             var json = JSON.stringify(res,undefined,2);
@@ -1000,13 +1000,15 @@ export class DemoMeetingApp implements AudioVideoObserver, DeviceChangeObserver,
                 if(key=="name"){
                     //トレンド名の取得
                     console.log(value)
+                    //functionでthisが変更されるので無理やりxでsendSystemMessageしています
+                    x.sendSystemMessage(value)
                 }
             });
         }).catch(function(err){
             console.log(err);
         });
       }
-*/
+
     
     // yahoo ニュースをスクレイピング 
       if (msg.startsWith('ニュース')) {
@@ -1028,7 +1030,7 @@ export class DemoMeetingApp implements AudioVideoObserver, DeviceChangeObserver,
         }
         })
       }
-
+      
     } else {
       this.log('Message is throttled. Please resend');
     }
